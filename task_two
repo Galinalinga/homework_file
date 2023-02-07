@@ -1,0 +1,32 @@
+with open('resipes.txt', 'rt', encoding= 'utf-8') as f:
+    cook_book = {}
+    for line in f:
+        dish_name = line.strip()
+        ingredients_count = int(f.readline())
+        ingredients = []
+        # print(dish_name)
+        for i in range(ingredients_count):
+            ingred = f.readline().strip()
+            name, quantity, measure = ingred.split(' | ')
+
+            ingredients.append({
+                'ingredient_name': name,
+                'quantity': quantity,
+                'measure': measure
+            })
+
+        f.readline()
+        cook_book[dish_name] = ingredients
+
+def get_shop_list_by_dishes(dishes, person_count):
+    recipe_dishes = {}
+    for dish in dishes:
+        if dish in cook_book:
+            for ingridient in cook_book[dish]:
+                recipe_dishes[ingridient['ingredient_name']] = {'measure': ingridient['measure'],
+                            'quantity': int(ingridient['quantity']) * person_count
+                                                              }
+
+    return recipe_dishes
+from pprint import pprint
+pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
